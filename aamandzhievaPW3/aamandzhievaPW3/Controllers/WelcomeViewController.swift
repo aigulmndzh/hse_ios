@@ -4,7 +4,7 @@ protocol ChangeColorProtocol: AnyObject {
     func changeColor(_ slider: ColorPaletteView)
 }
 
-class WelcomeViewController:UIViewController, ChangeColorProtocol  {
+class WelcomeViewController: UIViewController, ChangeColorProtocol  {
     private var commentLabel = UILabel()
     private let valueLabel = UILabel()
     private let incrementButton = UIButton()
@@ -12,6 +12,7 @@ class WelcomeViewController:UIViewController, ChangeColorProtocol  {
     var buttonsSV = UIStackView()
     private var value: Int = 0
     private var colorPaletteView = ColorPaletteView()
+    var color = UIColor()
     
     override func viewDidLoad() {
         setupView()
@@ -46,6 +47,24 @@ class WelcomeViewController:UIViewController, ChangeColorProtocol  {
         colorPaletteView.isHidden.toggle()
         let generator = UIImpactFeedbackGenerator(style: .medium)
         generator.impactOccurred()
+        color = (view.backgroundColor)!
+        identifyColor(color)
+    }
+    
+    func identifyColor(_ newColor: UIColor) {
+        colorPaletteView.chosenColor = newColor
+        colorPaletteView.redControl.value = Float(newColor.rgba.red)
+        colorPaletteView.greenControl.value = Float(newColor.rgba.green)
+        colorPaletteView.blueControl.value = Float(newColor.rgba.blue)
+        
+        colorPaletteView.redControl.slider.value = Float(newColor.rgba.red)
+        colorPaletteView.greenControl.slider.value = Float(newColor.rgba.green)
+        colorPaletteView.blueControl.slider.value = Float(newColor.rgba.blue)
+        
+        for control in [colorPaletteView.redControl, colorPaletteView.greenControl, colorPaletteView.blueControl] {
+            control.colorvalue.text = String(format: "%.3f", control.value)
+            control.sendActions(for: .touchDragInside)
+        }
     }
     
     private func setupIncrementButton() {
@@ -78,12 +97,14 @@ class WelcomeViewController:UIViewController, ChangeColorProtocol  {
     @objc
     private func updateUI() {
         valueLabel.text = "\(value)"
-        self.view.backgroundColor = UIColor(
-            red: .random(in: 0...1),
-            green: .random(in: 0...1),
-            blue: .random(in: 0...1),
-            alpha: 1
-        )
+        
+        //change color
+//        self.view.backgroundColor = UIColor(
+//            red: .random(in: 0...1),
+//            green: .random(in: 0...1),
+//            blue: .random(in: 0...1),
+//            alpha: 1
+//        )
     }
     
     private func setupValueLabel() {

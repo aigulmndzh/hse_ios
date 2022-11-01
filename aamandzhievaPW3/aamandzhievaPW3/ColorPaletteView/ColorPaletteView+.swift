@@ -2,10 +2,10 @@ import UIKit
 
 extension ColorPaletteView {
     class ColorSliderView: UIControl {
-        private let slider = UISlider()
+        var slider = UISlider()
         private let colorLabel = UILabel()
-        private var colorvalue = UILabel()
-        private(set) var value: Float
+        var colorvalue = UILabel()
+        var value: Float
         
         init(colorName: String, value: Float) {
             self.value = value
@@ -37,9 +37,9 @@ extension ColorPaletteView {
             stackView.pinRight(to: self, 12)
             stackView.pinTop(to: self, 12)
         }
-            
+        
         @objc
-        private func sliderMoved(_ slider: UISlider) {
+        internal func sliderMoved(_ slider: UISlider) {
             self.value = slider.value
             colorvalue.text = String(format: "%.3f", self.value)
             sendActions(for: .touchDragInside)

@@ -1,31 +1,37 @@
 import UIKit
 
-class ColorPaletteView: UIControl{
+class ColorPaletteView: UIControl {
     weak var delegate: ChangeColorProtocol?
 
-    private let stackView = UIStackView()
+    private var stackView = UIStackView()
     
-    private(set) var chosenColor:UIColor = .systemGray6
+    var chosenColor:UIColor = .systemGray6
+    var redControl = ColorSliderView(colorName: "Red    ", value: 0)
+    var greenControl = ColorSliderView(colorName: "Green", value: 0)
+    var blueControl = ColorSliderView(colorName: "Blue   ", value: 0)
+    
     
     init() {
         super.init(frame: .zero)
         setupView()
     }
+    
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     private func setupView() {
-        let redControl = ColorSliderView(colorName: "Red    ", value: Float(chosenColor.rgba.red))
-        let greenControl = ColorSliderView(colorName: "Green", value: Float(chosenColor.rgba.green))
-        let blueControl = ColorSliderView(colorName: "Blue   ", value: Float(chosenColor.rgba.blue))
+        
+        redControl.value = Float(chosenColor.rgba.red)
+        greenControl.value = Float(chosenColor.rgba.green)
+        blueControl.value = Float(chosenColor.rgba.blue)
         
         redControl.tag = 0
         greenControl.tag = 1
         blueControl.tag = 2
         
-        let stackView = UIStackView(arrangedSubviews: [redControl, greenControl, blueControl])
+        stackView = UIStackView(arrangedSubviews: [redControl, greenControl, blueControl])
         stackView.axis = .vertical
         stackView.distribution = .equalSpacing
         stackView.backgroundColor = .white
@@ -71,3 +77,4 @@ class ColorPaletteView: UIControl{
         sendActions(for: .touchDragInside)
     }
 }
+
